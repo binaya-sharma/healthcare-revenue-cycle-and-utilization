@@ -1,0 +1,4 @@
+payer_id,payer_name,payer_group
+PY01,Centers for Medicare,Medicare
+PY02,BlueChoice,Commercial
+PY03,State Medicaid,Medicaid

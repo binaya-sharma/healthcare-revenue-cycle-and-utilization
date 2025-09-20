@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fact_claims_line
+    columns:
+      - name: claim_id
+        tests:
+          - not_null
+      - name: line_num
+        tests:
+          - not_null
+      - name: member_id
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claim_id
+            - line_num

@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: int_eligibility_history
+    description: "All eligibility records, normalized term date (null -> 2999-12-31)"
+    columns:
+      - name: member_id
+      - name: payer_id
+      - name: plan_id
+      - name: coverage_start
+        tests: [not_null]
+      - name: coverage_end
+        tests: [not_null]
+      - name: _ingested_at
+        tests: [not_null]
+
+  - name: int_eligibility_latest
+    description: "Latest eligibility per (member_id, payer_id, plan_id)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [member_id, payer_id, plan_id]
+    columns:
+      - name: coverage_end
+        tests: [not_null]
+
+  - name: int_claims_header_history
+    description: "Incremental history of all claim headers"
+    columns:
+      - name: claim_header_sk
+        tests: [not_null, unique]
+      - name: claim_id
+        tests: [not_null]
+
+  - name: int_claims_header_latest
+    description: "Latest version of each claim header"
+    columns:
+      - name: claim_id
+        tests: [not_null, unique]
+
+  - name: int_claims_line_history
+    description: "Incremental history of all claim line items"
+    columns:
+      - name: claim_line_sk
+        tests: [not_null, unique]
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+
+  - name: int_claims_line_latest
+    description: "Latest version of each claim line"
+    columns:
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+
+  - name: int_remits_history
+    description: "All remit/EOB versions, incremental history"
+    columns:
+      - name: remit_sk
+        tests: [not_null, unique]
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+      - name: remit_dt
+
+  - name: int_remits_latest
+    description: "Latest remit event per (claim_id, line_num)"
+    columns:
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+
+  - name: int_remits_line_agg
+    description: "Aggregated remit amounts per (claim_id, line_num)"
+    columns:
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+      - name: paid_amount_sum

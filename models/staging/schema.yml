@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_eligibility
+    description: "Bronze layer: eligibility data cleaned from raw"
+    columns:
+      - name: member_id
+        description: "Member identifier; may be null in some feeds"
+      - name: source_filename
+        tests: [not_null]
+      - name: _ingested_at
+        tests: [not_null]
+
+  - name: stg_claims_header
+    description: "Bronze layer: claims header data cleaned from raw"
+    columns:
+      - name: claim_id
+        tests: [not_null, unique]   # every claim header must have a unique ID
+      - name: source_filename
+        tests: [not_null]
+      - name: _ingested_at
+        tests: [not_null]
+
+  - name: stg_claims_line
+    description: "Bronze layer: claim line items"
+    columns:
+      - name: claim_id
+        tests: [not_null]           # must always tie to a header
+      - name: line_num
+        tests: [not_null]
+      - name: source_filename
+        tests: [not_null]
+
+  - name: stg_remits
+    description: "Bronze layer: remittance advice"
+    columns:
+      - name: remit_id
+        tests: [not_null, unique]
+      - name: claim_id
+        tests: [not_null]
+      - name: line_num
+        tests: [not_null]
+      - name: source_filename
+        tests: [not_null]

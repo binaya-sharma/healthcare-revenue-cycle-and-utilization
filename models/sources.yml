@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw_elig
+    database: RAW
+    schema: ELIG
+    tables:
+      - name: ELIGIBILITY
+
+  - name: raw_claims
+    database: RAW
+    schema: CLAIMS
+    tables:
+      - name: CLAIMS_HEADER
+      - name: CLAIMS_LINE
+      - name: REMITS
