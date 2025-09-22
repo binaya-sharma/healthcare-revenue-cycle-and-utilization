@@ -39,7 +39,7 @@ Raw (S3) → Staging (RCM_STAGING) → Intermediate (RCM_INTERMEDIATE) → Marts
 - **Marts (Gold):** Fact + Dimension tables for BI consumption.  
 - **Snapshots:** SCD2 tracking (eligibility history with versioning).  
 
----
+![alt text](docs/dbt-dag.png)
 
 ## Data Sources
 
