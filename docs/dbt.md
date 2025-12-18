@@ -57,3 +57,6 @@ If we skip `is_incremental()`:
 
   ## Q7. What is profiles.yml
 profiles.yml is a single configuration file used to define multiple environment targets such as dev, prod, and staging. It lives outside the project directory and stores connection details, so you don’t commit it to Git. Each environment is defined as an output inside the file, and you simply switch environments by running dbt build --target <env>. On local machines you typically use the dev target, while CI/CD pipelines set the target to prod. In short, one profiles.yml manages all environments, and you select which one to use at runtime.
+
+## Q8. How can we run dbt in GitHub Actions without committing a profiles.yml, while still providing secure connection details for different environments?
+In GitHub Actions, you never commit profiles.yml. Instead, you store your warehouse credentials as GitHub Secrets and let the pipeline generate the profiles.yml file at runtime. The workflow creates the ~/.dbt directory, writes a temporary profiles.yml using those secrets, installs dbt, and then runs a command like dbt build --target prod. This approach keeps credentials secure, avoids committing sensitive files to Git, and still allows CI/CD to run dbt with the proper environment configuration.
