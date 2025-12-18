@@ -54,3 +54,6 @@ Because on the very first run, `{{ this }}` (the current model’s table) doesn�
 If we skip `is_incremental()`:  
 - First run → fails (table doesn’t exist)  
 - Second run onwards → works the same as with `is_incremental()`
+
+  ## Q7. What is profiles.yml
+profiles.yml is a single configuration file used to define multiple environment targets such as dev, prod, and staging. It lives outside the project directory and stores connection details, so you don’t commit it to Git. Each environment is defined as an output inside the file, and you simply switch environments by running dbt build --target <env>. On local machines you typically use the dev target, while CI/CD pipelines set the target to prod. In short, one profiles.yml manages all environments, and you select which one to use at runtime.
